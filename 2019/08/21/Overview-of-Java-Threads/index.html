@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <title>overview of java threads | Interstellar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="Java Concurrency">
+  
+  
+  
+  
+  <meta name="description" content="Introduction to Java ThreadsTheads are the most basic way of obtaining concurrency in Java A Java thread is a unit of computation that runs in the context of a process.  A process is a unit of resourc">
+<meta name="keywords" content="Java Concurrency">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Overview of Java Threads">
+<meta property="og:url" content="http://yoursite.com/2019/08/21/Overview-of-Java-Threads/index.html">
+<meta property="og:site_name" content="Interstellar">
+<meta property="og:description" content="Introduction to Java ThreadsTheads are the most basic way of obtaining concurrency in Java A Java thread is a unit of computation that runs in the context of a process.  A process is a unit of resourc">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-08-22T04:20:40.782Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Overview of Java Threads">
+<meta name="twitter:description" content="Introduction to Java ThreadsTheads are the most basic way of obtaining concurrency in Java A Java thread is a unit of computation that runs in the context of a process.  A process is a unit of resourc">
+  
+    <link rel="alternate" href="/atom.xml" title="Interstellar" type="application/atom+xml">
+  
+
+  
+
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
+
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
+
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
+
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
+
+</head>
+</html>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  
+  <div id="container">
+    <div id="wrap">
+      
+        <header>
+
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
+          
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
+                
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
+                
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
+                
+                  <li><div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Overview-of-Java-Threads" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Overview of Java Threads
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	<a href="/2019/08/21/Overview-of-Java-Threads/" class="article-date">
+	  <time datetime="2019-08-22T04:16:44.000Z" itemprop="datePublished">2019-08-21</time>
+	</a>
+
+      
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
+      
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Introduction-to-Java-Threads"><a href="#Introduction-to-Java-Threads" class="headerlink" title="Introduction to Java Threads"></a>Introduction to Java Threads</h2><h3 id="Theads-are-the-most-basic-way-of-obtaining-concurrency-in-Java"><a href="#Theads-are-the-most-basic-way-of-obtaining-concurrency-in-Java" class="headerlink" title="Theads are the most basic way of obtaining concurrency in Java"></a>Theads are the most basic way of obtaining concurrency in Java</h3><ul>
+<li>A Java thread is a unit of computation that runs in the context of a process. </li>
+<li>A process is a unit of resource allocation &amp; protection. </li>
+<li>Java enables multiple threads to run in multiple processes. <ul>
+<li>One thread can have multiple threads</li>
+</ul>
+</li>
+<li>Thread communicating <ul>
+<li>Java threads running in the same process can communicate with each other via shared objects or message passing. (Message is nothing but Data Structure)</li>
+<li>Java threads running in different processes can communicate with each other via shared memory or inter-process communication (IPC) mechanisms. (IPC: Sockets) (Shared Memory is not vanilla Java, but it supported by a bunch of other frameworks, like Android. )</li>
+</ul>
+</li>
+<li>Thread unique states and common states <ul>
+<li>Each Java thread leverages unique “state” from the underlying Operating System thread, e.g., a runtime stack, an instruction counter, &amp; other registers</li>
+<li>Java dynamic &amp; static objects can be shared across Java threads. (That’s why we can pass message around.) </li>
+</ul>
+</li>
+</ul>
+<h3 id="Giving-Code-to-a-Java-Thread"><a href="#Giving-Code-to-a-Java-Thread" class="headerlink" title="Giving Code to a Java Thread"></a>Giving Code to a Java Thread</h3><p>This app shows various methods in Java’s Thread class &amp; alternative ways of giving code to a Java thread.  </p>
+<ul>
+<li><p>Java threads <strong>must</strong> be given code to run </p>
+<blockquote>
+<p><strong>CAUTION</strong></p>
+<p>Do not use the “no argument” Thread constructor directly!!!</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Thread t = <span class="keyword">new</span> Thread();</span><br><span class="line">t.start();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Extend the <code>Thread</code> class </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GCDThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// code to run goes here</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Override the <code>run()</code> hook method in the subclass &amp; define the thread’s computations. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GCDThead gCDThread = <span class="keyword">new</span> GCDThread();</span><br><span class="line">gCDThread.start();</span><br></pre></td></tr></table></figure>
+
+<p>Create &amp; start a thread using a named subclass of <code>Thread</code>.</p>
+<ul>
+<li>Pros <ul>
+<li>It’s straightforward to extend the <code>Thread</code> super class <ul>
+<li>Just override the <code>run()</code> hook method!</li>
+</ul>
+</li>
+<li>It also consolidates all state &amp; methods in one place.<ul>
+<li>Enables central allocation &amp; management of the thread</li>
+<li>This design is useful when the thread must be updated during runtime configuration changes </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Cons<ul>
+<li>A subclass must extend the <code>Thread</code> superclass <ul>
+<li>This is restrictive since Java only allows one superclass per subclass</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Implementat the <code>Runnable</code> interface</p>
+<p>Implement the <code>run()</code> hook method of an interface to define the thread’s computations. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GCDRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// code to run </span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>Method 1 to run it : </p>
+<p>Create an instance of a named class as the runnable. Pass that runnable to a new thread object &amp; start it. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Runnable gCDRunnable = <span class="keyword">new</span> GCDRunnable();</span><br><span class="line"><span class="keyword">new</span> Thread()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Method 2 to run it : </p>
+<p>Create &amp; start a thread using an anonymous inner class as the runnable. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// code to run goes here </span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;).start();</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Method 3 to run it : (Lambda)</p>
+<p>A lambda expression is an unwieldy if the code to run is long, complex, or needs to be used multiple times. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">  <span class="comment">// code to run</span></span><br><span class="line">&#125;).start();</span><br></pre></td></tr></table></figure>
+
+<p>Another way to make the code reusable: </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Runnable r = () -&gt; &#123;</span><br><span class="line">  <span class="comment">// code to run</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">new</span> Thread(r).start();</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>Pros: </p>
+<ul>
+<li>A subclass can implement multiple interfaces <ul>
+<li>This enables it to extend a different superclass</li>
+<li>Runnables are flexible since they can be reused in other contexts</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Cons: </p>
+<ul>
+<li>Not really a con. </li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>CAUTION</strong></p>
+<p>In practice, Java &amp; Android software often implements Runnable rather than extending <code>Thread</code>.</p>
+</blockquote>
+<h3 id="Passing-Parameters-to-a-Java-Thread"><a href="#Passing-Parameters-to-a-Java-Thread" class="headerlink" title="Passing Parameters to a Java Thread"></a>Passing Parameters to a Java Thread</h3><p>Parameters passed to <code>run()</code> can be supplied via one of two other means. </p>
+<ul>
+<li><p>As parameters to a class constructor </p>
+<p>Use the field(s) within the thread’s <code>run()</code> hook method to customize its behavior. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GCDRunnalbe</span> <span class="keyword">extends</span> <span class="title">Random</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">final</span> MainActivity mActivity;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="title">GCDRunnable</span><span class="params">(MainActivity mainActivity)</span> </span>&#123;</span><br><span class="line">    mActivity = mainActivity;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> String threading = </span><br><span class="line">      <span class="string">" with thread id "</span> + Trhead.currentThread();</span><br><span class="line">    mActivity.println(<span class="string">"Entering run()"</span> + threadString);</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>As parameters to “setter” methods</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GCDRunnalbe</span> <span class="keyword">extends</span> <span class="title">Random</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> MainActivity mActivity;</span><br><span class="line">  <span class="keyword">private</span> Random mRandom;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> GCDThread <span class="title">setActivity</span><span class="params">(MainActivity activity)</span> </span>&#123;</span><br><span class="line">    mActivity = activity;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="function"><span class="keyword">public</span> GCDThread <span class="title">setRandom</span><span class="params">(Random random)</span> </span>&#123;</span><br><span class="line">    mRandom = random; </span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Running-Java-Threads"><a href="#Running-Java-Threads" class="headerlink" title="Running Java Threads"></a>Running Java Threads</h2><ul>
+<li>There are multiple layers involved in creating &amp; starting a thread <ul>
+<li>Creating a new thread object doesn’t allocate a run-time call stack of activation records. </li>
+<li>The runtime stack &amp; other thread resources are only allocated after the <code>start()</code> method is called. </li>
+<li>The Java execution environment calls a thread’s <code>run()</code> hook method after <code>start()</code> creates its resources. </li>
+<li>Each thread can run concurrently &amp; block independently</li>
+</ul>
+</li>
+<li>Any code can generally run in a thread <ul>
+<li>However, windowing toolkits often restrict which thread can access GUI components. <ul>
+<li>e.g., Only the Android UI thread can access GUI components </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Life-cycle-of-a-thread"><a href="#Life-cycle-of-a-thread" class="headerlink" title="Life cycle of a thread"></a>Life cycle of a thread</h3><ul>
+<li><p>A thread can live as long as its <code>run()</code> hook method hasn’t returned. </p>
+<ul>
+<li>The underlying thread scheduler can suspend &amp; resume a thread many times during its lifecycle. <ul>
+<li>Scheduler operations are largely invisible to user code, as long as synchronization is performed properly. </li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>For a thread to execute “forever”, its <code>run()</code> hook method needs an infinite loop. </p>
+</li>
+<li><p>The thread is dead after <code>run()</code> returns.</p>
+<ul>
+<li><p>A thread can end normally</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Or an uncaught exception can be thrown</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">    ...;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> SomeException();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>The <code>join()</code> method allows one thread to wait for another thread to complete</p>
+<ul>
+<li>A thread can simply evaporate! (蒸发，消失)</li>
+<li>The Java execution environment recycles thread resources<ul>
+<li>e.g., runtime stack of activation records, thread-specific storage, etc. </li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Some-Common-Java-Thread-Methods"><a href="#Some-Common-Java-Thread-Methods" class="headerlink" title="Some Common Java Thread Methods"></a>Some Common Java Thread Methods</h2><ul>
+<li>There are a number of commonly used methods in the Java <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Thread.html" target="_blank" rel="noopener">Thread class</a>, e.g.,<ul>
+<li><code>void setDaemon()</code> <ul>
+<li>Marks thread as a <code>daemon</code> </li>
+<li><strong>What is a daemon thread ?</strong></li>
+</ul>
+</li>
+<li><code>void start()</code><ul>
+<li>Allocates thread resources &amp; initiates thread execution by calling the <code>run()</code> hook method </li>
+</ul>
+</li>
+<li><code>void run()</code><ul>
+<li>Hook method where user code is supplied</li>
+</ul>
+</li>
+<li><code>void join()</code><ul>
+<li>Waits for a thread to finish</li>
+</ul>
+</li>
+<li><code>void sleep(long time)</code><ul>
+<li>Sleeps for given time in ms</li>
+</ul>
+</li>
+<li><code>Thread currentThread()</code> <ul>
+<li>Object for current Thread </li>
+</ul>
+</li>
+<li><code>void interrupt()</code><ul>
+<li>Post an interrupt request to a Thread </li>
+</ul>
+</li>
+<li><code>boolean isInterrupted()</code> <ul>
+<li>Tests whether a thread has been interrupted</li>
+</ul>
+</li>
+<li><code>boolean interrupted()</code> <ul>
+<li>Tests whether current thread has been interrupted</li>
+</ul>
+</li>
+<li><code>void setPriority(int newPriority) &amp; int getPriority()</code><ul>
+<li>Set &amp; get the priority of a <code>Thread</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Java-Thread-Happens-Before-Orderings"><a href="#Java-Thread-Happens-Before-Orderings" class="headerlink" title="Java Thread Happens-Before Orderings"></a>Java Thread <em>Happens-Before</em> Orderings</h2><ul>
+<li><p>Java Threads methods established <em>happens-before</em> orderings</p>
+<ul>
+<li>Ensure that if one event <em>happens-before</em> another event, the result must reflect that, even if those events are actually executed out of order. </li>
+<li>In general, a <em>happens-before</em> relationship guarantees that memory written to by statement A is visible to statement B</li>
+</ul>
+</li>
+<li><p>Examples of <em>happens-before</em> orderings in Java</p>
+<ul>
+<li><p>Starting a thread <em>happens-beofre</em> the <code>run()</code> hook method of the thread is called</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Thread t1 = </span><br><span class="line">  <span class="keyword">new</span> Thread(() -&gt; System.out.println(<span class="string">"hello world"</span>)).start();</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>The lambda <code>() -&gt; System.out.println(&quot;hello world&quot;)</code> plays the role of the <code>run()</code> hook method.</p>
+<p>A thread’s state is consistent &amp; visible before <code>run()</code> starts. </p>
+</blockquote>
+</li>
+<li><p>Methods in <code>java.util.concurrent</code> package classes also establish <em>happens-before</em> orderings.</p>
+</li>
+<li><p>The termination of a thead <em>happens-before</em> a <code>join()</code> with the terminated thread</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Thread t1 = </span><br><span class="line">  <span class="keyword">new</span> Thread(() -&gt; System.out.println(<span class="string">"hello world"</span>)).start;</span><br><span class="line">t1.join();</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>A thread waiting on a (non-timed) <code>join()</code> only resumes after the target thread terminates</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
+
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: 'Donate', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+      
+      
+      <div>
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>Alvin</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/2019/08/21/Overview-of-Java-Threads/" target="_blank" title="Overview of Java Threads">http://yoursite.com/2019/08/21/Overview-of-Java-Threads/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
+
+      
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+
+      
+      
+        
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java-Concurrency/">Java Concurrency</a></li></ul>
+
+      
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/08/11/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
+    
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction-to-Java-Threads"><span class="nav-number">1.</span> <span class="nav-text">Introduction to Java Threads</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Theads-are-the-most-basic-way-of-obtaining-concurrency-in-Java"><span class="nav-number">1.1.</span> <span class="nav-text">Theads are the most basic way of obtaining concurrency in Java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Giving-Code-to-a-Java-Thread"><span class="nav-number">1.2.</span> <span class="nav-text">Giving Code to a Java Thread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Passing-Parameters-to-a-Java-Thread"><span class="nav-number">1.3.</span> <span class="nav-text">Passing Parameters to a Java Thread</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Running-Java-Threads"><span class="nav-number">2.</span> <span class="nav-text">Running Java Threads</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Life-cycle-of-a-thread"><span class="nav-number">2.1.</span> <span class="nav-text">Life cycle of a thread</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Some-Common-Java-Thread-Methods"><span class="nav-number">3.</span> <span class="nav-text">Some Common Java Thread Methods</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java-Thread-Happens-Before-Orderings"><span class="nav-number">4.</span> <span class="nav-text">Java Thread Happens-Before Orderings</span></a></li></ol>
+    
+    </div>
+  </aside>
+
+</section>
+        
+      </div>
+      
+      <footer id="footer">
+  
+
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2019 Interstellar All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
+
+		
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
+
+
+
+
+
+
+
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            Interstellar
+          </div>
+          <div class="panel-body">
+            Copyright © 2019 Alvin All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+  
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+  
+</body>
+</html>
